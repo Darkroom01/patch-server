@@ -1,12 +1,12 @@
-FROM python:3.10
+FROM python:3.12-slim
 
 WORKDIR /app
 
+# 패키지 설치
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app ./app
-COPY patches ./patches
-COPY version.json .
+# app 폴더 전체 복사
+COPY app/ /app/
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

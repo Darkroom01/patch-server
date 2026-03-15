@@ -5,10 +5,9 @@ services:
     container_name: fastapi
     restart: always
     expose:
-      - "8000"  # 외부 포트는 Nginx가 사용
+      - "8000"
     volumes:
-      - ./patch_files:/app/patches
-      - ./patch_files/version.json:/app/patches/version.json
+      - ./patch_files:/app/patches   # 호스트 patch_files ↔ 컨테이너 /app/patches
     networks:
       - app-network
 
@@ -17,9 +16,10 @@ services:
     container_name: nginx
     restart: always
     ports:
-      - "80:80"   # LAN에서 접근할 포트
+      - "80:80"   # LAN 접근 포트
     volumes:
       - ./patch_files:/app/patches
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - fastapi
     networks:
