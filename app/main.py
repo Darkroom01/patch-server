@@ -15,6 +15,9 @@ def root():
     return {"message": "Patch Server Running"}
 
 
+PATCH_DIR = "patch_files"
+os.makedirs(PATCH_DIR, exist_ok=True)
+
 @app.post("/patch/upload")
 async def upload_patch(file: UploadFile = File(...)):
     file_path = os.path.join(PATCH_DIR, file.filename)
@@ -23,7 +26,6 @@ async def upload_patch(file: UploadFile = File(...)):
         f.write(await file.read())
 
     return {"message": "patch uploaded", "filename": file.filename}
-
 
 @app.get("/patch/latest")
 def get_latest_patch():
