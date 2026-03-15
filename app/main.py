@@ -27,9 +27,12 @@ async def upload_patch(file: UploadFile = File(...)):
 
     return {"message": "patch uploaded", "filename": file.filename}
 
+PATCH_DIR = "/app/patches"
+VERSION_FILE = os.path.join(PATCH_DIR, "version.json")
+
 @app.get("/patch/latest")
 def get_latest_patch():
-    with open("version.json", "r") as f:
+    with open(VERSION_FILE, "r") as f:
         data = json.load(f)
     return data
 
